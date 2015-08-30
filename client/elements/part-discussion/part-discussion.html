@@ -1,0 +1,87 @@
+<link rel="import" href="/components/polymer/polymer.html">
+<link rel="import" href="../api-model-find-one/api-model-find-one.html">
+<link rel="import" href="../app-session/app-session.html">
+<link rel="import" href="part-discussion-topics.html">
+<link rel="import" href="part-discussion-join.html">
+<link rel="import" href="part-discussion-create.html">
+<dom-module id="part-discussion">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+
+    <app-session id="session"></app-session>
+
+    <api-model-find-one id="find" collection="Discussions" where="{{where}}"
+      response="{{discussion}}">
+    </api-model-find-one>
+
+    <api-model-create id="create" collection="Discussions" data="{{data}}"
+      response="{{discussion}}">
+    </api-model-create>
+
+    <part-discussion-topics discussion="{{discussion}}"></part-discussion-topics>
+
+    <template is="dom-if" if="{{user}}">
+      <part-discussion-create discussion="{{discussion}}"></part-discussion-create>
+    </template>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'part-discussion',
+
+    properties: {
+      user: {
+        type: Object
+      },
+      discussion: {
+        type: Object,
+        value: function () { return {}; },
+        observer: 'on_discussion'
+      },
+      ref: {
+        type: String
+      },
+      refId: {
+        type: String
+      },
+      data: {
+        type: Object,
+        computed: '_compute_where(ref, refId)'
+      },
+      where: {
+        type: Object,
+        computed: '_compute_where(ref, refId)'
+      }
+    },
+
+    on_discussion: function () {
+      console.log(this.discussion);
+      if (!this.discussion) {
+        this.$.create.send();
+        console.log(this.discussion);
+      }
+    },
+
+    _compute_where: function (ref, refId) {
+      var where = { ref: { like: ref }, refId: { like: refId } };
+      this.$.find.send();
+      console.log(where);
+      return where;
+    },
+
+    _compute_data: function (ref, refId) {
+      return { ref: { like: ref }, refId: { like: refId } };
+    },
+
+    ready: function () {
+      this.user = this.$.session.get('user');
+    }
+
+  });
+</script>

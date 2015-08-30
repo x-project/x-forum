@@ -1,0 +1,23 @@
+{
+  "name": "Discussion",
+  "plural": "Discussions",
+  "base": "PersistedModel",
+  "properties": {
+    "ref": {
+      "type": "string"
+    },
+    "refId": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "topics": {
+      "type": "hasMany",
+      "model": "Topic",
+      "foreignKey": "discussionId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

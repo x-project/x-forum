@@ -1,0 +1,32 @@
+<link rel="import" href="/components/polymer/polymer.html">
+<dom-module id="part-discussion-message">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+
+    <li>
+      <div>
+        <div>{{message.author}}</div>
+        <div>{{message.created_at}}</div>
+        <div>{{message.text}}</div>
+      </div>
+    </li>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'part-discussion-message',
+
+    properties: {
+      message: {
+        type: Object
+      }
+    }
+
+  });
+</script>

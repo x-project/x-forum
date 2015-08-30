@@ -1,0 +1,53 @@
+<link rel="import" href="/components/polymer/polymer.html">
+<link rel="import" href="/components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import" href="../api-model-create/api-model-create.html">
+<dom-module id="part-discussion-reply">
+  <style>
+    :host {
+      display: block;
+    }
+
+    #form {
+      margin-bottom: 30px;
+    }
+  </style>
+  <template>
+
+    <api-model-create id="create"
+      path="/api/Topics/${id}/messages" path-params="{{topic}}"
+      data="{{message}}">
+    </api-model-create>
+
+    <form id="form" on-submit="on_submit">
+      <div>
+        <iron-autogrow-textarea bind-value="{{message.text}}">
+          <textarea></textarea>
+        </iron-autogrow-textarea>
+      </div>
+      <input type="submit" value="reply" />
+    </form>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'part-discussion-reply',
+
+    properties: {
+      topic: {
+        type: Object
+      },
+      message: {
+        type: Object,
+        value: function () { return {}; }
+      }
+    },
+
+    on_submit: function (event) {
+      event.preventDefault();
+      this.$.create.send();
+    }
+
+  });
+</script>

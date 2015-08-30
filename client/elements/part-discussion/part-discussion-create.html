@@ -1,0 +1,59 @@
+<link rel="import" href="/components/polymer/polymer.html">
+<link rel="import" href="../api-model-create/api-model-create.html">
+<dom-module id="part-discussion-create">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+
+    <api-model-create id="create"
+      path="/api/Discussions/${id}/topics" path-params="{{discussion}}"
+      data="{{topic}}">
+    </api-model-create>
+
+    <form id="form" on-submit="on_submit">
+      <div>
+        <label>title</label><br/>
+        <input is="iron-input" type="text" bind-value="{{topic.title}}">
+      </div>
+      <div>
+        <label>message</label><br/>
+        <iron-autogrow-textarea bind-value="{{topic.text}}">
+          <textarea></textarea>
+        </iron-autogrow-textarea>
+      </div>
+      <input type="submit" value="create" />
+    </form>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'part-discussion-create',
+
+    properties: {
+      discussion: {
+        type: Object
+      },
+      topic: {
+        type: Object
+      }
+    },
+
+    ready: function () {
+      this.topic = {
+        title: 'my first topic',
+        text: 'hello discussion'
+      };
+    },
+
+    on_submit: function (event) {
+      event.preventDefault();
+      this.$.create.send();
+    }
+
+  });
+</script>
